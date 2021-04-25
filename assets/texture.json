@@ -1,0 +1,502 @@
+{
+	"textures": [
+		{
+			"image": "texture.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 1944,
+				"h": 3014
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "jump04.gif",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 541,
+						"h": 605
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 11,
+						"w": 539,
+						"h": 594
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 539,
+						"h": 594
+					}
+				},
+				{
+					"filename": "jump10.gif",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 541,
+						"h": 605
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 8,
+						"w": 508,
+						"h": 594
+					},
+					"frame": {
+						"x": 539,
+						"y": 0,
+						"w": 508,
+						"h": 594
+					}
+				},
+				{
+					"filename": "jump02.gif",
+					"rotated": true,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 541,
+						"h": 605
+					},
+					"spriteSourceSize": {
+						"x": 35,
+						"y": 1,
+						"w": 506,
+						"h": 542
+					},
+					"frame": {
+						"x": 0,
+						"y": 594,
+						"w": 506,
+						"h": 542
+					}
+				},
+				{
+					"filename": "jump01.gif",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 541,
+						"h": 605
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 107,
+						"w": 529,
+						"h": 488
+					},
+					"frame": {
+						"x": 542,
+						"y": 594,
+						"w": 529,
+						"h": 488
+					}
+				},
+				{
+					"filename": "jump07.gif",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 541,
+						"h": 605
+					},
+					"spriteSourceSize": {
+						"x": 11,
+						"y": 1,
+						"w": 451,
+						"h": 555
+					},
+					"frame": {
+						"x": 1047,
+						"y": 0,
+						"w": 451,
+						"h": 555
+					}
+				},
+				{
+					"filename": "jump12.gif",
+					"rotated": true,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 541,
+						"h": 605
+					},
+					"spriteSourceSize": {
+						"x": 9,
+						"y": 54,
+						"w": 470,
+						"h": 528
+					},
+					"frame": {
+						"x": 542,
+						"y": 1082,
+						"w": 470,
+						"h": 528
+					}
+				},
+				{
+					"filename": "jump03.gif",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 541,
+						"h": 605
+					},
+					"spriteSourceSize": {
+						"x": 92,
+						"y": 3,
+						"w": 440,
+						"h": 563
+					},
+					"frame": {
+						"x": 1071,
+						"y": 555,
+						"w": 440,
+						"h": 563
+					}
+				},
+				{
+					"filename": "jump05.gif",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 541,
+						"h": 605
+					},
+					"spriteSourceSize": {
+						"x": 23,
+						"y": 3,
+						"w": 443,
+						"h": 549
+					},
+					"frame": {
+						"x": 1498,
+						"y": 0,
+						"w": 443,
+						"h": 549
+					}
+				},
+				{
+					"filename": "jump11.gif",
+					"rotated": true,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 541,
+						"h": 605
+					},
+					"spriteSourceSize": {
+						"x": 16,
+						"y": 4,
+						"w": 395,
+						"h": 589
+					},
+					"frame": {
+						"x": 1070,
+						"y": 1118,
+						"w": 395,
+						"h": 589
+					}
+				},
+				{
+					"filename": "jump15.gif",
+					"rotated": true,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 541,
+						"h": 605
+					},
+					"spriteSourceSize": {
+						"x": 9,
+						"y": 36,
+						"w": 414,
+						"h": 518
+					},
+					"frame": {
+						"x": 0,
+						"y": 1100,
+						"w": 414,
+						"h": 518
+					}
+				},
+				{
+					"filename": "run7.gif",
+					"rotated": true,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 587,
+						"h": 398
+					},
+					"spriteSourceSize": {
+						"x": 34,
+						"y": 0,
+						"w": 530,
+						"h": 398
+					},
+					"frame": {
+						"x": 1511,
+						"y": 549,
+						"w": 530,
+						"h": 398
+					}
+				},
+				{
+					"filename": "run1.gif",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 587,
+						"h": 398
+					},
+					"spriteSourceSize": {
+						"x": 44,
+						"y": 0,
+						"w": 538,
+						"h": 384
+					},
+					"frame": {
+						"x": 0,
+						"y": 1514,
+						"w": 538,
+						"h": 384
+					}
+				},
+				{
+					"filename": "run5.gif",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 587,
+						"h": 398
+					},
+					"spriteSourceSize": {
+						"x": 53,
+						"y": 6,
+						"w": 522,
+						"h": 391
+					},
+					"frame": {
+						"x": 1070,
+						"y": 1513,
+						"w": 522,
+						"h": 391
+					}
+				},
+				{
+					"filename": "jump13.gif",
+					"rotated": true,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 541,
+						"h": 605
+					},
+					"spriteSourceSize": {
+						"x": 65,
+						"y": 95,
+						"w": 397,
+						"h": 510
+					},
+					"frame": {
+						"x": 538,
+						"y": 1552,
+						"w": 397,
+						"h": 510
+					}
+				},
+				{
+					"filename": "run4.gif",
+					"rotated": true,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 587,
+						"h": 398
+					},
+					"spriteSourceSize": {
+						"x": 15,
+						"y": 33,
+						"w": 572,
+						"h": 352
+					},
+					"frame": {
+						"x": 1592,
+						"y": 1513,
+						"w": 572,
+						"h": 352
+					}
+				},
+				{
+					"filename": "jump06.gif",
+					"rotated": true,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 541,
+						"h": 605
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 12,
+						"w": 334,
+						"h": 591
+					},
+					"frame": {
+						"x": 0,
+						"y": 1949,
+						"w": 334,
+						"h": 591
+					}
+				},
+				{
+					"filename": "run3.gif",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 587,
+						"h": 398
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 53,
+						"w": 557,
+						"h": 342
+					},
+					"frame": {
+						"x": 591,
+						"y": 1949,
+						"w": 557,
+						"h": 342
+					}
+				},
+				{
+					"filename": "jump08.gif",
+					"rotated": true,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 541,
+						"h": 605
+					},
+					"spriteSourceSize": {
+						"x": 32,
+						"y": 63,
+						"w": 350,
+						"h": 534
+					},
+					"frame": {
+						"x": 0,
+						"y": 2283,
+						"w": 350,
+						"h": 534
+					}
+				},
+				{
+					"filename": "jump14.gif",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 541,
+						"h": 605
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 157,
+						"w": 435,
+						"h": 424
+					},
+					"frame": {
+						"x": 1148,
+						"y": 1904,
+						"w": 435,
+						"h": 424
+					}
+				},
+				{
+					"filename": "run8.gif",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 587,
+						"h": 398
+					},
+					"spriteSourceSize": {
+						"x": 14,
+						"y": 40,
+						"w": 518,
+						"h": 353
+					},
+					"frame": {
+						"x": 534,
+						"y": 2291,
+						"w": 518,
+						"h": 353
+					}
+				},
+				{
+					"filename": "jump09.gif",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 541,
+						"h": 605
+					},
+					"spriteSourceSize": {
+						"x": 20,
+						"y": 17,
+						"w": 329,
+						"h": 555
+					},
+					"frame": {
+						"x": 1583,
+						"y": 2085,
+						"w": 329,
+						"h": 555
+					}
+				},
+				{
+					"filename": "run6.gif",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 587,
+						"h": 398
+					},
+					"spriteSourceSize": {
+						"x": 60,
+						"y": 9,
+						"w": 468,
+						"h": 381
+					},
+					"frame": {
+						"x": 0,
+						"y": 2633,
+						"w": 468,
+						"h": 381
+					}
+				},
+				{
+					"filename": "run2.gif",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 587,
+						"h": 398
+					},
+					"spriteSourceSize": {
+						"x": 42,
+						"y": 27,
+						"w": 496,
+						"h": 328
+					},
+					"frame": {
+						"x": 1052,
+						"y": 2640,
+						"w": 496,
+						"h": 328
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "http://free-tex-packer.com",
+		"version": "0.6.6"
+	}
+}

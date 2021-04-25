@@ -10,16 +10,20 @@ class Play extends Phaser.Scene {
 
     create() {
         // place road sprite
-        this.starfield = this.add.tileSprite(0, 350, 1280, 436, 'road').setOrigin(0, 0);
+        var scale = 0.55;
+        this.road = this.add.tileSprite(0, 480, 1280/scale, 436/scale, 'road').setOrigin(0, 0);
+        this.physics.add.existing(this.road, true);
+        this.road.body.position.y = 500;
+        this.road.body.immovable = true;
+        this.road.setScale(scale, scale);
 
         // add camera
         this.camera = this.cameras.add();
         this.camera.setBackgroundColor('rgba(255, 255, 255, 1)');
 
         // create player
-
         this.anims.create({ 
-            key: 'test', 
+            key: 'runAnim', 
             frames: this.anims.generateFrameNames('pTexture', {
                 start: 1,
                 end: 8,
@@ -30,12 +34,17 @@ class Play extends Phaser.Scene {
             frameRate: 12, 
             repeat: -1
         });
-        this.player = this.add.sprite(200, 400, 'run');
-        this.player.setScale(0.5, 0.5);
-        this.player.anims.play('test');
+        this.player = this.physics.add.sprite(200, 350, 'run');
+        this.player.setScale(0.32, 0.32);
+        this.player.setSize(375, 350, false);
+        this.player.setOffset(60, 0);
+        this.player.anims.play('runAnim');
+
+        this.physics.add.collider(this.player, this.road);
+        this.player.setCollideWorldBounds(true);
     }
 
     update() {
-        this.starfield.tilePositionX += 4;
+        this.road.tilePositionX += 6;
     }
 }
