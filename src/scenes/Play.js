@@ -7,10 +7,17 @@ class Play extends Phaser.Scene {
         this.load.image('road', './assets/road.png');
         this.load.image('trash', './assets/trash.png');
         this.load.image('streetlight', './assets/streetlight.png');
+        this.load.image('farBG', './assets/farBG.png');
+        this.load.image('bg', './assets/streetBG.png');
         this.load.atlas('pTexture', './assets/pTexture.png', './assets/pTexture.json');
     }
 
     create() {
+        // place street background
+        this.farBG = this.add.tileSprite(0, 199, 3840, 285, 'farBG').setOrigin(0, 0);
+        this.bg = this.add.tileSprite(0, 0, 3840, 482, 'bg').setOrigin(0, 0);
+        
+
         // place road sprite
         var scale = 0.55;
         this.road = this.add.tileSprite(0, 480, 1280/scale, 436/scale, 'road').setOrigin(0, 0);
@@ -20,9 +27,9 @@ class Play extends Phaser.Scene {
         this.road.setScale(scale, scale);
 
         // create streetlight
-        this.light = this.physics.add.sprite(500, 360, 'streetlight');
+        this.light = this.physics.add.sprite(500, 361, 'streetlight');
         this.light.body.allowGravity = false;
-        this.light.setScale(0.9, 0.9);
+        this.light.setScale(0.541, 0.541);
         this.light.setPushable(false);
         this.light.setSize(50, 90, false);
         this.light.setOffset(40, 0);
@@ -107,8 +114,10 @@ class Play extends Phaser.Scene {
         this.physics.add.collider(this.player, this.road);
     }
 
-    update(time, delta) {
-        this.road.tilePositionX += gameSpeed * delta;
+    update() {
+        this.road.tilePositionX += gameSpeed * 1.8;
+        this.bg.tilePositionX += gameSpeed;
+        this.farBG.tilePositionX += gameSpeed * 0.5;
 
         if(this.player.body.touching.down && !this.isRun && (this.player.anims.currentAnim.key === 'jumpAnim' || !this.isSliding)) {
             this.PlayerRun();
