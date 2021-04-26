@@ -21,6 +21,11 @@ class Play extends Phaser.Scene {
         this.camera = this.cameras.add();
         this.camera.setBackgroundColor('rgba(255, 255, 255, 1)');
 
+        // player logic
+        this.isSliding = false;
+        this.slideWait = false;
+        this.isRun = false;
+
         // create player
         this.anims.create({ 
             key: 'runAnim', 
@@ -47,6 +52,19 @@ class Play extends Phaser.Scene {
             frameRate: 12, 
             repeat: 0
         });
+
+        this.anims.create({
+            key: 'slideAnim',
+            frames: this.anims.generateFrameNames('pTexture', {
+                start: 3,
+                end: 6,
+                zeroPad: 1,
+                prefix: 'slide',
+                suffix: '.gif'
+            }),
+            frameRate: 24, 
+            repeat: 0
+        });
         this.player = this.physics.add.sprite(200, 350, 'run');
         this.PlayerRun();
 
@@ -55,18 +73,38 @@ class Play extends Phaser.Scene {
 
         // controls
         this.cursors = this.input.keyboard.createCursorKeys();
+
+        this.player.on('animationcomplete-slideAnim', function () {
+            if(this.cursors.down.isDown && this.player.body.touching.down) {
+                this.slideWait = true;
+            }
+            else {
+                this.isSliding = false;
+            }
+        }, this);
     }
 
     update() {
         this.road.tilePositionX += 6;
-        if(this.player.body.touching.down && this.player.anims.currentAnim.key === 'jumpAnim') {
+        if(this.player.body.touching.down && !this.isRun && (this.player.anims.currentAnim.key === 'jumpAnim' || !this.isSliding)) {
             this.PlayerRun();
+        }
+
+        //horrific logic, use states next time...
+        if(this.slideWait = true && this.cursors.down.isUp && this.player.body.touching.down && !this.isRun)
+        {
+            this.PlayerRun();
+            this.slideWait = false;
+            this.isSliding = false;
         }
 
         if(this.cursors.up.isDown && this.player.body.touching.down) {
             this.PlayerJump();
         }
-        
+
+        if(this.cursors.down.isDown && this.player.body.touching.down && !this.isSliding && this.cursors.up.isUp) {
+            this.PlayerSlide();
+        }
     }
 
     PlayerRun(){
@@ -74,6 +112,7 @@ class Play extends Phaser.Scene {
         this.player.setSize(375, 350, false);
         this.player.setOffset(60, 0);
         this.player.anims.play('runAnim');
+        this.isRun = true;
     }
 
     PlayerJump(){
@@ -82,6 +121,15 @@ class Play extends Phaser.Scene {
         this.player.setSize(325, 500, false);
         this.player.setOffset(60, 0);
         this.player.setScale(0.25, 0.25);
-        
+        this.isRun = false;
+        this.isSliding = false;
+    }
+
+    PlayerSlide(){
+        this.player.anims.play('slideAnim');
+        this.player.setSize(400, 200, false);
+        this.player.setOffset(60, 200);
+        this.isSliding = true;
+        this.isRun = false;
     }
 }
