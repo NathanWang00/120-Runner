@@ -1,6 +1,6 @@
 // 120 Endless Runner by Team Radicool Dragonfire Ninjas
 // Made for the AGPM and CMPM 120-1 classes, section E
-// By Liam Booher, Ashley Chapp, Ethan Tung and Nathan Wang
+// By Liam Booher, Ashley Chapp, Ethan Tung, and Nathan Wang
 // 30 April 2021
 
 let config = {
@@ -28,3 +28,13 @@ let moveSpeed = 300;
 let friction = 100;
 let airSpeed = 100;
 let gameSpeed = 6;
+
+
+/* 
+
+NOTES FOR THE GRADERS OF CMPM-120-1, PROFESSOR ADAM SMITH:
+
+- "Crayon Hand Regular" typeface sourced from https://www.dafont.com/, a free font licensed for personal/educational use.
+
+
+*/
