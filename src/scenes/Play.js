@@ -115,6 +115,8 @@ class Play extends Phaser.Scene {
     }
 
     update() {
+
+        //background
         this.road.tilePositionX += gameSpeed * 1.8;
         this.bg.tilePositionX += gameSpeed;
         this.farBG.tilePositionX += gameSpeed * 0.5;
