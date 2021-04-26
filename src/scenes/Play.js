@@ -26,6 +26,8 @@ class Play extends Phaser.Scene {
         this.light.setPushable(false);
         this.light.setSize(50, 90, false);
         this.light.setOffset(40, 0);
+        this.light.x = game.config.width + 100;
+        this.light.setVelocityX(-210);
 
         // add camera
         this.camera = this.cameras.add();
@@ -97,7 +99,7 @@ class Play extends Phaser.Scene {
             this.light,
             function (_player, _light)
             {
-                if (!_player.body.touching.up && !_light.body.touching.down)
+                if (!_player.body.touching.down && !_light.body.touching.up)
                 {
                     console.log("collision");
                 }
@@ -105,8 +107,9 @@ class Play extends Phaser.Scene {
         this.physics.add.collider(this.player, this.road);
     }
 
-    update() {
-        this.road.tilePositionX += gameSpeed;
+    update(time, delta) {
+        this.road.tilePositionX += gameSpeed * delta;
+
         if(this.player.body.touching.down && !this.isRun && (this.player.anims.currentAnim.key === 'jumpAnim' || !this.isSliding)) {
             this.PlayerRun();
         }
@@ -143,6 +146,11 @@ class Play extends Phaser.Scene {
         //}
 
         // insert air movement
+
+        // object logic
+        if (this.light.x < -500) {
+            this.light.x = game.config.width + 500;
+        }
     }
 
     PlayerRun(){
@@ -156,8 +164,8 @@ class Play extends Phaser.Scene {
     PlayerJump(){
         this.player.setVelocityY(-jumpSpeed);
         this.player.anims.play('jumpAnim');
-        this.player.setSize(200, 500, false);
-        this.player.setOffset(80, 0);
+        this.player.setSize(200, 475, false);
+        this.player.setOffset(80, 25);
         this.player.setScale(0.25, 0.25);
         this.isRun = false;
         this.isSliding = false;

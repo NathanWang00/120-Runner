@@ -27,4 +27,4 @@ let jumpSpeed = 500;
 let moveSpeed = 300;
 let friction = 100;
 let airSpeed = 100;
-let gameSpeed = 6;
+let gameSpeed = 0.4;
