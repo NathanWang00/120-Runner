@@ -5,6 +5,8 @@ class Play extends Phaser.Scene {
 
     preload() {
         this.load.image('road', './assets/road.png');
+        this.load.image('trash', './assets/trash.png');
+        this.load.image('streetlight', './assets/streetlight.png');
         this.load.atlas('pTexture', './assets/pTexture.png', './assets/pTexture.json');
     }
 
@@ -16,6 +18,14 @@ class Play extends Phaser.Scene {
         this.road.body.position.y = 500;
         this.road.body.immovable = true;
         this.road.setScale(scale, scale);
+
+        // create streetlight
+        this.light = this.physics.add.sprite(500, 360, 'streetlight');
+        this.light.body.allowGravity = false;
+        this.light.setScale(0.9, 0.9);
+        this.light.setPushable(false);
+        this.light.setSize(50, 90, false);
+        this.light.setOffset(40, 0);
 
         // add camera
         this.camera = this.cameras.add();
@@ -67,8 +77,6 @@ class Play extends Phaser.Scene {
         });
         this.player = this.physics.add.sprite(200, 350, 'run');
         this.PlayerRun();
-
-        this.physics.add.collider(this.player, this.road);
         this.player.setCollideWorldBounds(true);
 
         // controls
@@ -82,10 +90,23 @@ class Play extends Phaser.Scene {
                 this.isSliding = false;
             }
         }, this);
+
+        // collisions
+        this.physics.add.collider(
+            this.player,
+            this.light,
+            function (_player, _light)
+            {
+                if (!_player.body.touching.up && !_light.body.touching.down)
+                {
+                    console.log("collision");
+                }
+            });
+        this.physics.add.collider(this.player, this.road);
     }
 
     update() {
-        this.road.tilePositionX += 6;
+        this.road.tilePositionX += gameSpeed;
         if(this.player.body.touching.down && !this.isRun && (this.player.anims.currentAnim.key === 'jumpAnim' || !this.isSliding)) {
             this.PlayerRun();
         }
@@ -105,21 +126,38 @@ class Play extends Phaser.Scene {
         if(this.cursors.down.isDown && this.player.body.touching.down && !this.isSliding && this.cursors.up.isUp) {
             this.PlayerSlide();
         }
+
+        // left right ground movement
+        //if(this.isRun) {
+        if (this.cursors.left.isDown) {
+            this.player.setVelocityX(-moveSpeed * 1.3);
+        }
+        else {
+            if (this.cursors.right.isDown) {
+                this.player.setVelocityX(moveSpeed);
+            }
+            else {
+                this.player.setVelocityX(0);
+            }
+        }
+        //}
+
+        // insert air movement
     }
 
     PlayerRun(){
         this.player.setScale(0.32, 0.32);
-        this.player.setSize(375, 350, false);
-        this.player.setOffset(60, 0);
+        this.player.setSize(375, 300, false);
+        this.player.setOffset(60, 50);
         this.player.anims.play('runAnim');
         this.isRun = true;
     }
 
     PlayerJump(){
-        this.player.setVelocityY(-500);
+        this.player.setVelocityY(-jumpSpeed);
         this.player.anims.play('jumpAnim');
-        this.player.setSize(325, 500, false);
-        this.player.setOffset(60, 0);
+        this.player.setSize(200, 500, false);
+        this.player.setOffset(80, 0);
         this.player.setScale(0.25, 0.25);
         this.isRun = false;
         this.isSliding = false;
@@ -129,7 +167,9 @@ class Play extends Phaser.Scene {
         this.player.anims.play('slideAnim');
         this.player.setSize(400, 200, false);
         this.player.setOffset(60, 200);
+        this.player.setScale(0.3, 0.3);
         this.isSliding = true;
         this.isRun = false;
+        this.player.setVelocityX(moveSpeed*0.6);
     }
 }

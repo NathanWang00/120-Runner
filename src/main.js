@@ -23,3 +23,8 @@ let config = {
 }
 
 let game = new Phaser.Game(config);
+let jumpSpeed = 500;
+let moveSpeed = 300;
+let friction = 100;
+let airSpeed = 100;
+let gameSpeed = 6;
