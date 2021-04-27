@@ -46,6 +46,13 @@ class Play extends Phaser.Scene {
         this.trash.setSize(142, 135, false);
         this.trash.setOffset(10, 20);
 
+        // obstacle group
+        this.obstacles = this.add.group();
+        this.obstacles.add(this.trash);
+        this.obstacles.add(this.light);
+        console.log(this.obstacles.getFirstAlive())
+        //this.obstacles.killAndHide(this.light)
+
         // add camera
         this.camera = this.cameras.add();
         this.camera.setBackgroundColor('rgba(255, 255, 255, 1)');
