@@ -4,7 +4,7 @@
 // 30 April 2021
 
 let config = {
-    type: Phaser.AUTO,
+    type: Phaser.CANVAS,
     width: 1280,
     height: 720,
     scale: {
@@ -19,6 +19,10 @@ let config = {
             }
         }
     },
+    /*fps: {
+        target: 60,
+        forceSetTimeOut: true
+    },*/
     scene: [ Menu, Play ]
 }
 
@@ -27,7 +31,7 @@ let jumpSpeed = 500;
 let moveSpeed = 300;
 let friction = 100;
 let airSpeed = 100;
-let gameSpeed = 6;
+let gameSpeed = 12.5;
 
 
 /* 
