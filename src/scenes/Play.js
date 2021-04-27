@@ -10,6 +10,7 @@ class Play extends Phaser.Scene {
         this.load.image('farBG', './assets/farBG.png');
         this.load.image('clouds', './assets/clouds.png');
         this.load.image('bg', './assets/streetBG.png');
+        this.load.image('window', './assets/windowOverlay.png');        
         this.load.atlas('pTexture', './assets/pTexture.png', './assets/pTexture.json');
     }
 
@@ -139,6 +140,10 @@ class Play extends Phaser.Scene {
                 }
             });
         this.physics.add.collider(this.player, this.road);
+
+        // create window overlay
+        this.window = this.add.sprite(1280 / 2, 720 / 2, 'window');
+        
     }
 
     update(time, delta) {

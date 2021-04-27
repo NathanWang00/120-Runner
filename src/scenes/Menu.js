@@ -5,7 +5,7 @@ class Menu extends Phaser.Scene {
 
     preload() {
 
-        //this.load.image('KEY', 'PATH');
+        this.load.image('window', './assets/windowOverlay.png');    
 
     }
 
@@ -24,6 +24,9 @@ class Menu extends Phaser.Scene {
         }
 
         this.add.text(1280 / 2, 720 / 2, 'PRESS SPACE TO CONTINUE', menuConfig).setOrigin(0.5);
+
+        // create window overlay
+        this.window = this.add.sprite(1280 / 2, 720 / 2, 'window');
 
     }
 
