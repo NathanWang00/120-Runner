@@ -32,6 +32,8 @@ let moveSpeed = 300;
 let friction = 100;
 let airSpeed = 100;
 let gameSpeed = 12.5;
+let randomCount = 3;
+let randomTrack = randomCount;
 
 
 /* 

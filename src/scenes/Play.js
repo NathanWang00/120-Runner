@@ -94,10 +94,8 @@ class Play extends Phaser.Scene {
         this.obstacles.add(this.light2);
         this.obstacles.add(this.piano2);
         //this.obstacles.shuffle();
-        this.activeObject = this.obstacles.getFirstAlive();
-        this.activeObject.enable = 1;
-        this.obstacles.kill(this.activeObject);
-        //this.obstacles.killAndHide();
+
+        this.ActivateFirst();
         // random frequency add width, deep copy
 
         // add camera
@@ -254,7 +252,8 @@ class Play extends Phaser.Scene {
 
         // object logic
         if (this.light.x < -500) {
-            this.light.x = game.config.width + 500;
+            //this.light.x = game.config.width + 500;
+            this.ResetObstacle(this.light);
         }
         if (this.trash.x < -500) {
             this.trash.x = game.config.width + 500;
@@ -287,5 +286,22 @@ class Play extends Phaser.Scene {
         this.isSliding = true;
         this.isRun = false;
         this.player.setVelocityX(moveSpeed*0.6);
+    }
+
+    ActivateFirst(){
+        this.activeObject = this.obstacles.getFirstAlive();
+        this.activeObject.enable = 1;
+        this.obstacles.kill(this.activeObject);
+        if (randomTrack = 0) {
+            this.obstacles.shuffle();
+            randomTrack = randomCount;
+        }
+        randomTrack --;
+    }
+
+    ResetObstacle(object){
+        object.x = game.config.width + 500; //add random
+        object.enable = 0;
+        object.active = true;
     }
 }
