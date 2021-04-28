@@ -7,10 +7,11 @@ class Play extends Phaser.Scene {
         this.load.image('road', './assets/road.png');
         this.load.image('trash', './assets/trash.png');
         this.load.image('streetlight', './assets/streetlight.png');
+        this.load.image('piano', './assets/piano.png');
         this.load.image('farBG', './assets/farBG.png');
         this.load.image('clouds', './assets/clouds.png');
         this.load.image('bg', './assets/streetBG.png');
-        this.load.image('window', './assets/windowOverlay.png');        
+        this.load.image('window', './assets/windowOverlay.png');
         this.load.atlas('pTexture', './assets/pTexture.png', './assets/pTexture.json');
     }
 
@@ -47,12 +48,57 @@ class Play extends Phaser.Scene {
         this.trash.setSize(142, 135, false);
         this.trash.setOffset(10, 20);
 
+        // create piano
+        this.piano = this.physics.add.sprite(500, 0, 'piano').setOrigin(0, 0);
+        this.piano.body.allowGravity = false;
+        this.piano.setPushable(false);
+        this.piano.setSize(170, 100);
+        this.piano.setOffset(25, 325);
+
+        // too lazy to make prefabs
+        this.light2 = this.physics.add.sprite(game.config.width + 100, 363, 'streetlight');
+        this.light2.body.allowGravity = false;
+        this.light2.setScale(0.541, 0.541);
+        this.light2.setPushable(false);
+        this.light2.setSize(80, 150, false);
+        this.light2.setOffset(100, 20);
+
+        this.trash2 = this.physics.add.sprite(500, 471, 'trash');
+        this.trash2.body.allowGravity = false;
+        this.trash2.setScale(0.541, 0.541);
+        this.trash2.setPushable(false);
+        this.trash2.setSize(142, 135, false);
+        this.trash2.setOffset(10, 20);
+
+        this.piano2 = this.physics.add.sprite(500, 0, 'piano').setOrigin(0, 0);
+        this.piano2.body.allowGravity = false;
+        this.piano2.setPushable(false);
+        this.piano2.setSize(170, 100);
+        this.piano2.setOffset(25, 325);
+
+        this.light.enable = 0;
+        this.trash.enable = 0;
+        this.piano.enable = 0;
+        this.light2.enable = 0;
+        this.trash2.enable = 0;
+        this.piano2.enable = 0;
+
+        this.activeObject = null;
+
         // obstacle group
         this.obstacles = this.add.group();
-        this.obstacles.add(this.trash);
         this.obstacles.add(this.light);
-        console.log(this.obstacles.getFirstAlive())
-        //this.obstacles.killAndHide(this.light)
+        this.obstacles.add(this.trash);
+        this.obstacles.add(this.piano);
+        this.obstacles.add(this.trash2);
+        this.obstacles.add(this.light2);
+        this.obstacles.add(this.piano2);
+        //this.obstacles.shuffle();
+        this.activeObject = this.obstacles.getFirstAlive();
+        this.activeObject.enable = 1;
+        this.obstacles.kill(this.activeObject);
+        //this.obstacles.killAndHide();
+        // random frequency add width, deep copy
 
         // add camera
         this.camera = this.cameras.add();
@@ -139,6 +185,16 @@ class Play extends Phaser.Scene {
                     console.log("collision");
                 }
             });
+        this.physics.add.collider(
+            this.player,
+            this.piano,
+            function (_player, _piano)
+            {
+                if (!_player.body.touching.down && !_piano.body.touching.up)
+                {
+                    console.log("collision");
+                }
+            });
         this.physics.add.collider(this.player, this.road);
 
         // create window overlay
@@ -152,9 +208,13 @@ class Play extends Phaser.Scene {
         this.bg.tilePositionX += gameSpeed * delta / 60;
         this.farBG.tilePositionX += gameSpeed * 0.42 * delta / 60;
         this.clouds.tilePositionX += gameSpeed * 0.3 * delta / 60;
-        this.light.x -= gameSpeed * delta / 60;
-        this.trash.x -= gameSpeed * delta /60;
-
+        this.light.x -= gameSpeed * delta / 60 * this.light.enable;
+        this.trash.x -= gameSpeed * delta /60 * this.trash.enable;
+        this.piano.x -= gameSpeed * delta /60 * this.piano.enable;
+        this.light2.x -= gameSpeed * delta / 60 * this.light2.enable;
+        this.trash2.x -= gameSpeed * delta /60 * this.trash2.enable;
+        this.piano2.x -= gameSpeed * delta /60 * this.piano2.enable;
+        
         if(this.player.body.touching.down && !this.isRun && (this.player.anims.currentAnim.key === 'jumpAnim' || !this.isSliding)) {
             this.PlayerRun();
         }
