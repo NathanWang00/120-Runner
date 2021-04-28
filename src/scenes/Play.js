@@ -41,7 +41,7 @@ class Play extends Phaser.Scene {
         this.light.setOffset(100, 20);
 
         // create trash
-        this.trash = this.physics.add.sprite(500, 471, 'trash');
+        this.trash = this.physics.add.sprite(game.config.width + 100, 471, 'trash');
         this.trash.body.allowGravity = false;
         this.trash.setScale(0.541, 0.541);
         this.trash.setPushable(false);
@@ -49,7 +49,7 @@ class Play extends Phaser.Scene {
         this.trash.setOffset(10, 20);
 
         // create piano
-        this.piano = this.physics.add.sprite(500, 0, 'piano').setOrigin(0, 0);
+        this.piano = this.physics.add.sprite(game.config.width + 100, 0, 'piano').setOrigin(0, 0);
         this.piano.body.allowGravity = false;
         this.piano.setPushable(false);
         this.piano.setSize(170, 100);
@@ -63,14 +63,14 @@ class Play extends Phaser.Scene {
         this.light2.setSize(80, 150, false);
         this.light2.setOffset(100, 20);
 
-        this.trash2 = this.physics.add.sprite(500, 471, 'trash');
+        this.trash2 = this.physics.add.sprite(game.config.width + 100, 471, 'trash');
         this.trash2.body.allowGravity = false;
         this.trash2.setScale(0.541, 0.541);
         this.trash2.setPushable(false);
         this.trash2.setSize(142, 135, false);
         this.trash2.setOffset(10, 20);
 
-        this.piano2 = this.physics.add.sprite(500, 0, 'piano').setOrigin(0, 0);
+        this.piano2 = this.physics.add.sprite(game.config.width + 100, 0, 'piano').setOrigin(0, 0);
         this.piano2.body.allowGravity = false;
         this.piano2.setPushable(false);
         this.piano2.setSize(170, 100);
@@ -163,36 +163,12 @@ class Play extends Phaser.Scene {
         }, this);
 
         // collisions
-        this.physics.add.collider(
-            this.player,
-            this.light,
-            function (_player, _light)
-            {
-                if (!_player.body.touching.down && !_light.body.touching.up)
-                {
-                    console.log("collision");
-                }
-            });
-        this.physics.add.collider(
-            this.player,
-            this.trash,
-            function (_player, _trash)
-            {
-                if (!_player.body.touching.down && !_trash.body.touching.up)
-                {
-                    console.log("collision");
-                }
-            });
-        this.physics.add.collider(
-            this.player,
-            this.piano,
-            function (_player, _piano)
-            {
-                if (!_player.body.touching.down && !_piano.body.touching.up)
-                {
-                    console.log("collision");
-                }
-            });
+        this.physics.add.collider(this.player, this.light, this.Die, null, this);
+        this.physics.add.collider(this.player, this.trash, this.Die, null, this);
+        this.physics.add.collider(this.player, this.piano, this.Die, null, this);
+        this.physics.add.collider(this.player, this.light2, this.Die, null, this);
+        this.physics.add.collider(this.player, this.trash2, this.Die, null, this);
+        this.physics.add.collider(this.player, this.piano2, this.Die, null, this);
         this.physics.add.collider(this.player, this.road);
 
         // create window overlay
@@ -303,5 +279,12 @@ class Play extends Phaser.Scene {
         object.x = game.config.width + 500; //add random
         object.enable = 0;
         object.active = true;
+    }
+
+    Die(player, obstacle){
+        if (!player.body.touching.down && !obstacle.body.touching.up)
+            {
+                console.log("Death");
+            }
     }
 }
