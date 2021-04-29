@@ -93,10 +93,7 @@ class Play extends Phaser.Scene {
         this.obstacles.add(this.trash2);
         this.obstacles.add(this.light2);
         this.obstacles.add(this.piano2);
-        //this.obstacles.shuffle();
-
-        this.ActivateFirst();
-        // random frequency add width, deep copy
+        this.obstacles.shuffle();
 
         // add camera
         this.camera = this.cameras.add();
@@ -106,6 +103,8 @@ class Play extends Phaser.Scene {
         this.isSliding = false;
         this.slideWait = false;
         this.isRun = false;
+        this.slideFriction = 0;
+        this.airSlide = false;
 
         // create player
         this.anims.create({ 
@@ -171,6 +170,18 @@ class Play extends Phaser.Scene {
         this.physics.add.collider(this.player, this.piano2, this.Die, null, this);
         this.physics.add.collider(this.player, this.road);
 
+        // logic for spacing
+        this.lastObjWidth = 0;
+
+        //this.ActivateFirst();
+        // object timer
+        this.objTimer = this.time.addEvent({
+            delay: 0,
+            callback: this.ActivateFirst,
+            callbackScope: this,
+            loop: false
+        });
+
         // create window overlay
         this.window = this.add.sprite(1280 / 2, 720 / 2, 'window');
         
@@ -205,41 +216,74 @@ class Play extends Phaser.Scene {
             this.PlayerJump();
         }
 
-        if(this.cursors.down.isDown && this.player.body.touching.down && !this.isSliding && this.cursors.up.isUp) {
+        var justDown = false;
+        if(Phaser.Input.Keyboard.JustDown(this.cursors.down)) {
+            justDown = true;
+        }
+
+        if(justDown && !this.player.body.touching.down) {
+            this.airSlide = true;
+        }
+
+        if(justDown && this.player.body.touching.down && !this.isSliding && this.cursors.up.isUp) {
+            this.PlayerSlide();
+        }
+
+        if(this.airSlide && this.player.body.touching.down && !this.isSliding && this.cursors.up.isUp) {
+            this.airSlide = false;
             this.PlayerSlide();
         }
 
         // left right ground movement
-        //if(this.isRun) {
-        if (this.cursors.left.isDown) {
-            this.player.setVelocityX(-moveSpeed * 1.3);
-        }
-        else {
-            if (this.cursors.right.isDown) {
-                this.player.setVelocityX(moveSpeed);
+        if(!this.isSliding) {
+            if (this.cursors.left.isDown) {
+                this.player.setVelocityX(-moveSpeed * 1.3);
             }
             else {
-                this.player.setVelocityX(0);
+                if (this.cursors.right.isDown) {
+                    this.player.setVelocityX(moveSpeed);
+                }
+                else {
+                    this.player.setVelocityX(0);
+                }
+            }
+        } else {
+            this.player.setVelocityX(moveSpeed * 1.5 * (1 - this.slideFriction));
+            if(this.slideFriction < 1) {
+                this.slideFriction += 0.07 * delta / 60;
+            }
+            else {
+                this.isSliding = false;
             }
         }
-        //}
 
         // insert air movement
 
         // object logic
         if (this.light.x < -500) {
-            //this.light.x = game.config.width + 500;
             this.ResetObstacle(this.light);
         }
         if (this.trash.x < -500) {
-            this.trash.x = game.config.width + 500;
+            this.ResetObstacle(this.trash);
+        }
+        if (this.piano2.x < -500) {
+            this.ResetObstacle(this.piano2);
+        }
+        if (this.light2.x < -500) {
+            this.ResetObstacle(this.light2);
+        }
+        if (this.trash2.x < -500) {
+            this.ResetObstacle(this.trash2);
+        }
+        if (this.piano.x < -500) {
+            this.ResetObstacle(this.piano);
         }
     }
 
     PlayerRun(){
         this.player.setScale(0.32, 0.32);
-        this.player.setSize(375, 300, false);
-        this.player.setOffset(60, 50);
+        this.player.setSize(250, 300, false);
+        this.player.setOffset(185, 50);
         this.player.anims.play('runAnim');
         this.isRun = true;
     }
@@ -256,27 +300,46 @@ class Play extends Phaser.Scene {
 
     PlayerSlide(){
         this.player.anims.play('slideAnim');
-        this.player.setSize(400, 200, false);
-        this.player.setOffset(60, 200);
+        this.player.setSize(300, 200, false);
+        this.player.setOffset(160, 200);
         this.player.setScale(0.3, 0.3);
         this.isSliding = true;
         this.isRun = false;
-        this.player.setVelocityX(moveSpeed*0.6);
+        this.slideFriction = 0;
     }
 
     ActivateFirst(){
         this.activeObject = this.obstacles.getFirstAlive();
         this.activeObject.enable = 1;
+        this.activeObject.x += this.lastObjWidth;
+
         this.obstacles.kill(this.activeObject);
-        if (randomTrack = 0) {
-            this.obstacles.shuffle();
+        this.obstacles.remove(this.activeObject);
+        this.obstacles.add(this.activeObject);
+
+        if (spawnDelay > lowestDelay) {
+            spawnDelay -= 4300 / 20;
+            gameSpeed += 32.5 / 20;
+            // insert spawn - x
+            //also up speed
+        }
+        if (randomTrack == 0) {
+            Phaser.Actions.Shuffle(this.obstacles.getChildren());
             randomTrack = randomCount;
         }
-        randomTrack --;
+        randomTrack -= 1;
+        this.lastObjWidth = this.activeObject.width;
+
+        this.objTimer = this.time.addEvent({
+            delay: spawnDelay,
+            callback: this.ActivateFirst,
+            callbackScope: this,
+            loop: false
+        });
     }
 
     ResetObstacle(object){
-        object.x = game.config.width + 500; //add random
+        object.x = game.config.width + Phaser.Math.Between(50, 100);
         object.enable = 0;
         object.active = true;
     }
