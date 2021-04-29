@@ -51,10 +51,10 @@ class Play extends Phaser.Scene {
         this.trash.setOffset(10, 20);
 
         // create piano
-        this.piano = this.physics.add.sprite(game.config.width + 100, 0, 'piano').setOrigin(0, 0);
+        this.piano = this.physics.add.sprite(game.config.width + 100, -50, 'piano').setOrigin(0, 0);
         this.piano.body.allowGravity = false;
         this.piano.setPushable(false);
-        this.piano.setSize(170, 100);
+        this.piano.setSize(170, 150);
         this.piano.setOffset(25, 325);
 
         // too lazy to make prefabs
@@ -72,10 +72,10 @@ class Play extends Phaser.Scene {
         this.trash2.setSize(142, 135, false);
         this.trash2.setOffset(10, 20);
 
-        this.piano2 = this.physics.add.sprite(game.config.width + 100, 0, 'piano').setOrigin(0, 0);
+        this.piano2 = this.physics.add.sprite(game.config.width + 100, -50, 'piano').setOrigin(0, 0);
         this.piano2.body.allowGravity = false;
         this.piano2.setPushable(false);
-        this.piano2.setSize(170, 100);
+        this.piano2.setSize(170, 150);
         this.piano2.setOffset(25, 325);
 
         this.light.enable = 0;

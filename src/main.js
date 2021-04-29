@@ -15,7 +15,7 @@ let config = {
         arcade: {
             debug: true,
             gravity: {
-                y: 1000
+                y: 1250
             }
         }
     },
@@ -27,7 +27,7 @@ let config = {
 }
 
 let game = new Phaser.Game(config);
-let jumpSpeed = 500;
+let jumpSpeed = 700;
 let moveSpeed = 300;
 let friction = 100;
 let airSpeed = 100;
