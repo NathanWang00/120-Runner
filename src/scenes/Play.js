@@ -212,6 +212,10 @@ class Play extends Phaser.Scene {
         // create window overlay
         this.window = this.add.sprite(1280 / 2, 720 / 2, 'window');
         
+        // Nathan was dumb and didn't realize that global variables don't get reset
+        gameSpeed = 12.5;
+        randomCount = 3;
+        spawnDelay = 5000;
     }
 
     update(time, delta) {
