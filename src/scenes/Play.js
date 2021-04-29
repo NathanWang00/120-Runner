@@ -12,6 +12,7 @@ class Play extends Phaser.Scene {
         this.load.image('clouds', './assets/clouds.png');
         this.load.image('bg', './assets/streetBG.png');
         this.load.image('window', './assets/windowOverlay.png');
+        this.load.image('gameOver', './assets/gameOver.png');
         this.load.atlas('pTexture', './assets/pTexture.png', './assets/pTexture.json');
     }
 
@@ -24,7 +25,18 @@ class Play extends Phaser.Scene {
         this.bg = this.add.tileSprite(0, 0, 3840, 482, 'bg').setOrigin(0, 0);
 
         this.clouds.setScale(0.5, 0.5);
-        
+
+        // text config
+        this.playConfig = {
+
+            fontFamily: 'crayonhand',
+            fontSize: '42px',
+            color: '#FFFFFF',
+            stroke: '#000000',
+            strokeThickness: 3,
+            align: 'left'
+
+        }
 
         // place road sprite
         var scale = 0.55;
@@ -249,6 +261,10 @@ class Play extends Phaser.Scene {
             this.PlayerSlide();
         }
 
+        if (this.cursors.space.isDown && this.gameOver) {
+            this.scene.restart();   
+        }
+
         // left right ground movement
         if(!this.isSliding) {
             if (this.cursors.left.isDown) {
@@ -362,13 +378,25 @@ class Play extends Phaser.Scene {
     }
 
     Die(player, obstacle){
-        if (!player.body.touching.down && !obstacle.body.touching.up)
-            {
-                this.player.anims.play('deathAnim');
-                this.player.body.enable = false;
-                gameSpeed = 0;
-                this.gameOver = true;
-                // insert UI stuff here!
-            }
+        if (!player.body.touching.down && !obstacle.body.touching.up) {
+
+            this.player.anims.play('deathAnim');
+            this.player.body.enable = false;
+            gameSpeed = 0;
+            this.gameOver = true;
+                     
+            // UI elements
+            this.gameOver = this.add.sprite(1280 / 2, 720 / 2 - 75, 'gameOver');
+                
+            this.playConfig.color = '#000000';
+            this.add.text(1280 / 2 + 1, 720 / 2 + 2 + 25, 'Press           to restart!', this.playConfig).setOrigin(0.5);
+            this.playConfig.color = '#FFFFFF';
+            this.add.text(1280 / 2, 720 / 2 + 25, 'Press           to restart!', this.playConfig).setOrigin(0.5);
+            this.playConfig.color = '#000000';
+            this.add.text(1280 / 2 - 55 + 1, 720 / 2 + 2 + 25, 'space', this.playConfig).setOrigin(0.5);
+            this.playConfig.color = '#FFE272';
+            this.add.text(1280 / 2 - 55, 720 / 2 + 25, 'space', this.playConfig).setOrigin(0.5);
+                
+        }
     }
 }

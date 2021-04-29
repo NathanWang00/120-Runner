@@ -5,7 +5,9 @@ class Menu extends Phaser.Scene {
 
     preload() {
 
-        this.load.image('window', './assets/windowOverlay.png');    
+        this.load.image('menuBG', './assets/menuBG.png');
+        this.load.image('logo', './assets/logo.png');
+        this.load.image('instructions', './assets/instructions.png');   
 
     }
 
@@ -14,19 +16,34 @@ class Menu extends Phaser.Scene {
         
         this.cursors = this.input.keyboard.createCursorKeys();
 
+        // create graphics
+        this.window = this.add.sprite(1280 / 2, 720 / 2, 'menuBG');
+        this.logo = this.add.sprite(1280 / 2, 720 / 2 - 120, 'logo');
+        this.instructions = this.add.sprite(1280 / 2, 720 / 2 + 10, 'instructions');
+
+
+        // other UI elements
+
         let menuConfig = {
 
             fontFamily: 'crayonhand',
-            fontSize: '28px',
+            fontSize: '42px',
             color: '#FFFFFF',
+            stroke: '#000000',
+            strokeThickness: 3,
             align: 'left'
 
         }
-
-        this.add.text(1280 / 2, 720 / 2, 'PRESS SPACE TO CONTINUE', menuConfig).setOrigin(0.5);
-
-        // create window overlay
-        this.window = this.add.sprite(1280 / 2, 720 / 2, 'window');
+        
+        menuConfig.color = '#000000';
+        this.add.text(1280 / 2 + 1, 720 / 2 + 2 + 100, 'Press           to continue!', menuConfig).setOrigin(0.5);
+        menuConfig.color = '#FFFFFF';
+        this.add.text(1280 / 2, 720 / 2 + 100, 'Press           to continue!', menuConfig).setOrigin(0.5);
+        menuConfig.color = '#000000';
+        this.add.text(1280 / 2 - 70 + 1, 720 / 2 + 2 + 100, 'space', menuConfig).setOrigin(0.5);
+        menuConfig.color = '#FFE272';
+        this.add.text(1280 / 2 - 70, 720 / 2 + 100, 'space', menuConfig).setOrigin(0.5);
+        
 
     }
 
