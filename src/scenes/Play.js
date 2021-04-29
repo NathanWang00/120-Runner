@@ -16,6 +16,8 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        this.gameOver = false;
+
         // place street background
         this.clouds = this.add.tileSprite(0, 0, 2560, 720, 'clouds').setOrigin(0, 0);
         this.farBG = this.add.tileSprite(0, 199, 3840, 285, 'farBG').setOrigin(0, 0);
@@ -140,6 +142,19 @@ class Play extends Phaser.Scene {
                 end: 6,
                 zeroPad: 1,
                 prefix: 'slide',
+                suffix: '.gif'
+            }),
+            frameRate: 24, 
+            repeat: 0
+        });
+
+        this.anims.create({
+            key: 'deathAnim',
+            frames: this.anims.generateFrameNames('pTexture', {
+                start: 1,
+                end: 9,
+                zeroPad: 1,
+                prefix: 'die',
                 suffix: '.gif'
             }),
             frameRate: 24, 
@@ -309,33 +324,35 @@ class Play extends Phaser.Scene {
     }
 
     ActivateFirst(){
-        this.activeObject = this.obstacles.getFirstAlive();
-        this.activeObject.enable = 1;
-        this.activeObject.x += this.lastObjWidth;
+        if (!this.gameOver) {
+            this.activeObject = this.obstacles.getFirstAlive();
+            this.activeObject.enable = 1;
+            this.activeObject.x += this.lastObjWidth;
 
-        this.obstacles.kill(this.activeObject);
-        this.obstacles.remove(this.activeObject);
-        this.obstacles.add(this.activeObject);
+            this.obstacles.kill(this.activeObject);
+            this.obstacles.remove(this.activeObject);
+            this.obstacles.add(this.activeObject);
 
-        if (spawnDelay > lowestDelay) {
-            spawnDelay -= 4300 / 20;
-            gameSpeed += 32.5 / 20;
-            // insert spawn - x
-            //also up speed
+            if (spawnDelay > lowestDelay) {
+                spawnDelay -= 4300 / 20;
+                gameSpeed += 32.5 / 20;
+                // insert spawn - x
+                //also up speed
+            }
+            if (randomTrack == 0) {
+                Phaser.Actions.Shuffle(this.obstacles.getChildren());
+                randomTrack = randomCount;
+            }
+            randomTrack -= 1;
+            this.lastObjWidth = this.activeObject.width;
+
+            this.objTimer = this.time.addEvent({
+                delay: spawnDelay,
+                callback: this.ActivateFirst,
+                callbackScope: this,
+                loop: false
+            });
         }
-        if (randomTrack == 0) {
-            Phaser.Actions.Shuffle(this.obstacles.getChildren());
-            randomTrack = randomCount;
-        }
-        randomTrack -= 1;
-        this.lastObjWidth = this.activeObject.width;
-
-        this.objTimer = this.time.addEvent({
-            delay: spawnDelay,
-            callback: this.ActivateFirst,
-            callbackScope: this,
-            loop: false
-        });
     }
 
     ResetObstacle(object){
@@ -347,7 +364,11 @@ class Play extends Phaser.Scene {
     Die(player, obstacle){
         if (!player.body.touching.down && !obstacle.body.touching.up)
             {
-                console.log("Death");
+                this.player.anims.play('deathAnim');
+                this.player.body.enable = false;
+                gameSpeed = 0;
+                this.gameOver = true;
+                // insert UI stuff here!
             }
     }
 }
