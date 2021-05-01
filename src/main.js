@@ -1,4 +1,4 @@
-// 120 Endless Runner by Team Radicool Dragonfire Ninjas
+// Sidewalk Sprint by Team Radicool Dragonfire Ninjas
 // Made for the AGPM and CMPM 120-1 classes, section E
 // By Liam Booher, Ashley Chapp, Ethan Tung, and Nathan Wang
 // 30 April 2021
@@ -31,11 +31,14 @@ let jumpSpeed = 700;
 let moveSpeed = 300;
 let friction = 100;
 let airSpeed = 100;
+let startSpeed = 12.5;
 let gameSpeed = 12.5;
+let maxSpeed = 45;
 let randomCount = 3;
 let randomTrack = 3;
-let spawnDelay = 5000;
-let lowestDelay = 700;
+let startDelay = 4500;
+let spawnDelay = 4500;
+let lowestDelay = 1000;
 
 
 /* 

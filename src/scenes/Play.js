@@ -51,8 +51,8 @@ class Play extends Phaser.Scene {
         this.light.body.allowGravity = false;
         this.light.setScale(0.541, 0.541);
         this.light.setPushable(false);
-        this.light.setSize(80, 150, false);
-        this.light.setOffset(100, 20);
+        this.light.setSize(80, 145, false);
+        this.light.setOffset(100, 10);
 
         // create trash
         this.trash = this.physics.add.sprite(game.config.width + 100, 471, 'trash');
@@ -74,8 +74,8 @@ class Play extends Phaser.Scene {
         this.light2.body.allowGravity = false;
         this.light2.setScale(0.541, 0.541);
         this.light2.setPushable(false);
-        this.light2.setSize(80, 150, false);
-        this.light2.setOffset(100, 20);
+        this.light2.setSize(80, 145, false);
+        this.light2.setOffset(100, 10);
 
         this.trash2 = this.physics.add.sprite(game.config.width + 100, 471, 'trash');
         this.trash2.body.allowGravity = false;
@@ -90,12 +90,20 @@ class Play extends Phaser.Scene {
         this.piano2.setSize(170, 150);
         this.piano2.setOffset(25, 325);
 
+        this.trash3 = this.physics.add.sprite(game.config.width + 100, 471, 'trash');
+        this.trash3.body.allowGravity = false;
+        this.trash3.setScale(0.541, 0.541);
+        this.trash3.setPushable(false);
+        this.trash3.setSize(142, 135, false);
+        this.trash3.setOffset(10, 20);
+
         this.light.enable = 0;
         this.trash.enable = 0;
         this.piano.enable = 0;
         this.light2.enable = 0;
         this.trash2.enable = 0;
         this.piano2.enable = 0;
+        this.trash3.enable = 0;
 
         this.activeObject = null;
 
@@ -107,6 +115,7 @@ class Play extends Phaser.Scene {
         this.obstacles.add(this.trash2);
         this.obstacles.add(this.light2);
         this.obstacles.add(this.piano2);
+        this.obstacles.add(this.trash3);
         this.obstacles.shuffle();
 
         // add camera
@@ -172,7 +181,7 @@ class Play extends Phaser.Scene {
             frameRate: 24, 
             repeat: 0
         });
-        this.player = this.physics.add.sprite(200, 350, 'run');
+        this.player = this.physics.add.sprite(200, 450, 'run');
         this.PlayerRun();
         this.player.setCollideWorldBounds(true);
 
@@ -215,7 +224,7 @@ class Play extends Phaser.Scene {
         // Nathan was dumb and didn't realize that global variables don't get reset
         gameSpeed = 12.5;
         randomCount = 3;
-        spawnDelay = 5000;
+        spawnDelay = 4500;
     }
 
     update(time, delta) {
@@ -230,6 +239,7 @@ class Play extends Phaser.Scene {
         this.light2.x -= gameSpeed * delta / 60 * this.light2.enable;
         this.trash2.x -= gameSpeed * delta /60 * this.trash2.enable;
         this.piano2.x -= gameSpeed * delta /60 * this.piano2.enable;
+        this.trash3.x -= gameSpeed * delta /60 * this.trash3.enable;
         
         if(this.player.body.touching.down && !this.isRun && (this.player.anims.currentAnim.key === 'jumpAnim' || !this.isSliding)) {
             this.PlayerRun();
@@ -313,12 +323,23 @@ class Play extends Phaser.Scene {
         if (this.piano.x < -500) {
             this.ResetObstacle(this.piano);
         }
+        if (this.trash3.x < -500) {
+            this.ResetObstacle(this.trash3);
+        }
+
+        // game difficult up
+        if(!this.gameOver){
+            if (spawnDelay > lowestDelay) {
+                spawnDelay -= (1 - (startDelay - spawnDelay)/startDelay) * 12 * delta / 60;
+            }
+            gameSpeed += (1 - (gameSpeed - startSpeed) / (maxSpeed - startSpeed)) * 0.1 * delta / 60;
+        }
     }
 
     PlayerRun(){
         this.player.setScale(0.32, 0.32);
-        this.player.setSize(250, 300, false);
-        this.player.setOffset(185, 50);
+        this.player.setSize(225, 300, false);
+        this.player.setOffset(205, 50);
         this.player.anims.play('runAnim');
         this.isRun = true;
     }
@@ -326,11 +347,12 @@ class Play extends Phaser.Scene {
     PlayerJump(){
         this.player.setVelocityY(-jumpSpeed);
         this.player.anims.play('jumpAnim');
-        this.player.setSize(200, 475, false);
-        this.player.setOffset(80, 25);
+        this.player.setSize(200, 465, false);
+        this.player.setOffset(80, 35);
         this.player.setScale(0.25, 0.25);
         this.isRun = false;
         this.isSliding = false;
+        console.log(gameSpeed);
     }
 
     PlayerSlide(){
@@ -347,25 +369,25 @@ class Play extends Phaser.Scene {
         if (!this.gameOver) {
             this.activeObject = this.obstacles.getFirstAlive();
             this.activeObject.enable = 1;
-            this.activeObject.x += this.lastObjWidth;
-
+            
+            if(!this.activeObject.texture.key == 'streetlight'){
+                this.activeObject.x += this.lastObjWidth;
+                this.lastObjWidth = this.activeObject.width;
+            } else {
+                this.lastObjWidth = 0;
+            }
+            this.activeObject.x += Phaser.Math.Between(0, 50);
+            
             this.obstacles.kill(this.activeObject);
             this.obstacles.remove(this.activeObject);
             this.obstacles.add(this.activeObject);
 
-            if (spawnDelay > lowestDelay) {
-                spawnDelay -= 4300 / 20;
-                gameSpeed += 32.5 / 20;
-                // insert spawn - x
-                //also up speed
-            }
             if (randomTrack == 0) {
                 Phaser.Actions.Shuffle(this.obstacles.getChildren());
                 randomTrack = randomCount;
             }
             randomTrack -= 1;
-            this.lastObjWidth = this.activeObject.width;
-
+            
             this.objTimer = this.time.addEvent({
                 delay: spawnDelay,
                 callback: this.ActivateFirst,
