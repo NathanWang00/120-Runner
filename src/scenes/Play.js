@@ -198,12 +198,12 @@ class Play extends Phaser.Scene {
         }, this);
 
         // collisions
-        this.physics.add.collider(this.player, this.light, this.Die, null, this);
-        this.physics.add.collider(this.player, this.trash, this.Die, null, this);
-        this.physics.add.collider(this.player, this.piano, this.Die, null, this);
-        this.physics.add.collider(this.player, this.light2, this.Die, null, this);
-        this.physics.add.collider(this.player, this.trash2, this.Die, null, this);
-        this.physics.add.collider(this.player, this.piano2, this.Die, null, this);
+        this.physics.add.overlap(this.player, this.light, this.Die, null, this);
+        this.physics.add.overlap(this.player, this.trash, this.Die, null, this);
+        this.physics.add.overlap(this.player, this.piano, this.Die, null, this);
+        this.physics.add.overlap(this.player, this.light2, this.Die, null, this);
+        this.physics.add.overlap(this.player, this.trash2, this.Die, null, this);
+        this.physics.add.overlap(this.player, this.piano2, this.Die, null, this);
         this.physics.add.collider(this.player, this.road);
 
         // logic for spacing
@@ -228,78 +228,80 @@ class Play extends Phaser.Scene {
     }
 
     update(time, delta) {
-        //background
-        this.road.tilePositionX += gameSpeed * 1.8 * delta / 60;
-        this.bg.tilePositionX += gameSpeed * delta / 60;
-        this.farBG.tilePositionX += gameSpeed * 0.42 * delta / 60;
-        this.clouds.tilePositionX += gameSpeed * 0.3 * delta / 60;
-        this.light.x -= gameSpeed * delta / 60 * this.light.enable;
-        this.trash.x -= gameSpeed * delta /60 * this.trash.enable;
-        this.piano.x -= gameSpeed * delta /60 * this.piano.enable;
-        this.light2.x -= gameSpeed * delta / 60 * this.light2.enable;
-        this.trash2.x -= gameSpeed * delta /60 * this.trash2.enable;
-        this.piano2.x -= gameSpeed * delta /60 * this.piano2.enable;
-        this.trash3.x -= gameSpeed * delta /60 * this.trash3.enable;
-        
-        if(this.player.body.touching.down && !this.isRun && (this.player.anims.currentAnim.key === 'jumpAnim' || !this.isSliding)) {
-            this.PlayerRun();
-        }
+        if (!this.gameOver) {
+            //background
+            this.road.tilePositionX += gameSpeed * 1.8 * delta / 60;
+            this.bg.tilePositionX += gameSpeed * delta / 60;
+            this.farBG.tilePositionX += gameSpeed * 0.42 * delta / 60;
+            this.clouds.tilePositionX += gameSpeed * 0.3 * delta / 60;
+            this.light.x -= gameSpeed * delta / 60 * this.light.enable;
+            this.trash.x -= gameSpeed * delta /60 * this.trash.enable;
+            this.piano.x -= gameSpeed * delta /60 * this.piano.enable;
+            this.light2.x -= gameSpeed * delta / 60 * this.light2.enable;
+            this.trash2.x -= gameSpeed * delta /60 * this.trash2.enable;
+            this.piano2.x -= gameSpeed * delta /60 * this.piano2.enable;
+            this.trash3.x -= gameSpeed * delta /60 * this.trash3.enable;
+            
+            if(this.player.body.touching.down && !this.isRun && (this.player.anims.currentAnim.key === 'jumpAnim' || !this.isSliding)) {
+                this.PlayerRun();
+            }
 
-        //horrific logic, use states next time...
-        if(this.slideWait = true && this.cursors.down.isUp && this.player.body.touching.down && !this.isRun)
-        {
-            this.PlayerRun();
-            this.slideWait = false;
-            this.isSliding = false;
-        }
+            //horrific logic, use states next time...
+            if(this.slideWait = true && this.cursors.down.isUp && this.player.body.touching.down && !this.isRun)
+            {
+                this.PlayerRun();
+                this.slideWait = false;
+                this.isSliding = false;
+            }
 
-        if(this.cursors.up.isDown && this.player.body.touching.down) {
-            this.PlayerJump();
-        }
+            if(this.cursors.up.isDown && this.player.body.touching.down) {
+                this.PlayerJump();
+            }
 
-        var justDown = false;
-        if(Phaser.Input.Keyboard.JustDown(this.cursors.down)) {
-            justDown = true;
-        }
+            var justDown = false;
+            if(Phaser.Input.Keyboard.JustDown(this.cursors.down)) {
+                justDown = true;
+            }
 
-        if(justDown && !this.player.body.touching.down) {
-            this.airSlide = true;
-        }
+            if(justDown && !this.player.body.touching.down) {
+                this.airSlide = true;
+            }
 
-        if(justDown && this.player.body.touching.down && !this.isSliding && this.cursors.up.isUp) {
-            this.PlayerSlide();
-        }
+            if(justDown && this.player.body.touching.down && !this.isSliding && this.cursors.up.isUp) {
+                this.PlayerSlide();
+            }
 
-        if(this.airSlide && this.player.body.touching.down && !this.isSliding && this.cursors.up.isUp) {
-            this.airSlide = false;
-            this.PlayerSlide();
+            if(this.airSlide && this.player.body.touching.down && !this.isSliding && this.cursors.up.isUp) {
+                this.airSlide = false;
+                this.PlayerSlide();
+            }
+
+            // left right ground movement
+            if(!this.isSliding) {
+                if (this.cursors.left.isDown) {
+                    this.player.setVelocityX(-moveSpeed * 1.3);
+                }
+                else {
+                    if (this.cursors.right.isDown) {
+                        this.player.setVelocityX(moveSpeed);
+                    }
+                    else {
+                        this.player.setVelocityX(0);
+                    }
+                }
+            } else {
+                this.player.setVelocityX(moveSpeed * 1.5 * (1 - this.slideFriction));
+                if(this.slideFriction < 1) {
+                    this.slideFriction += 0.07 * delta / 60;
+                }
+                else {
+                    this.isSliding = false;
+                }
+            }
         }
 
         if (this.cursors.space.isDown && this.gameOver) {
             this.scene.restart();   
-        }
-
-        // left right ground movement
-        if(!this.isSliding) {
-            if (this.cursors.left.isDown) {
-                this.player.setVelocityX(-moveSpeed * 1.3);
-            }
-            else {
-                if (this.cursors.right.isDown) {
-                    this.player.setVelocityX(moveSpeed);
-                }
-                else {
-                    this.player.setVelocityX(0);
-                }
-            }
-        } else {
-            this.player.setVelocityX(moveSpeed * 1.5 * (1 - this.slideFriction));
-            if(this.slideFriction < 1) {
-                this.slideFriction += 0.07 * delta / 60;
-            }
-            else {
-                this.isSliding = false;
-            }
         }
 
         // insert air movement
@@ -404,25 +406,21 @@ class Play extends Phaser.Scene {
     }
 
     Die(player, obstacle){
-        if (!player.body.touching.down && !obstacle.body.touching.up) {
-
-            this.player.anims.play('deathAnim');
-            this.player.body.enable = false;
-            gameSpeed = 0;
-            this.gameOver = true;
-                     
-            // UI elements
-            this.gameOver = this.add.sprite(1280 / 2, 720 / 2 - 75, 'gameOver');
-                
-            this.playConfig.color = '#000000';
-            this.add.text(1280 / 2 + 1, 720 / 2 + 2 + 25, 'Press           to restart!', this.playConfig).setOrigin(0.5);
-            this.playConfig.color = '#FFFFFF';
-            this.add.text(1280 / 2, 720 / 2 + 25, 'Press           to restart!', this.playConfig).setOrigin(0.5);
-            this.playConfig.color = '#000000';
-            this.add.text(1280 / 2 - 55 + 1, 720 / 2 + 2 + 25, 'space', this.playConfig).setOrigin(0.5);
-            this.playConfig.color = '#FFE272';
-            this.add.text(1280 / 2 - 55, 720 / 2 + 25, 'space', this.playConfig).setOrigin(0.5);
-                
-        }
+        this.player.anims.play('deathAnim');
+        this.player.body.enable = false;
+        gameSpeed = 0;
+        this.gameOver = true;
+                    
+        // UI elements
+        this.gameOver = this.add.sprite(1280 / 2, 720 / 2 - 75, 'gameOver');
+            
+        this.playConfig.color = '#000000';
+        this.add.text(1280 / 2 + 1, 720 / 2 + 2 + 25, 'Press           to restart!', this.playConfig).setOrigin(0.5);
+        this.playConfig.color = '#FFFFFF';
+        this.add.text(1280 / 2, 720 / 2 + 25, 'Press           to restart!', this.playConfig).setOrigin(0.5);
+        this.playConfig.color = '#000000';
+        this.add.text(1280 / 2 - 55 + 1, 720 / 2 + 2 + 25, 'space', this.playConfig).setOrigin(0.5);
+        this.playConfig.color = '#FFE272';
+        this.add.text(1280 / 2 - 55, 720 / 2 + 25, 'space', this.playConfig).setOrigin(0.5);
     }
 }
