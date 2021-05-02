@@ -371,10 +371,10 @@ class Play extends Phaser.Scene {
         //Stops the running sfx loop from playing in the game over screen
         if (this.gameOver){
             this.runningSfx.stop(runLoopSfx);//stops running loop on death}
+            this.bgCar.stop(carSFX);//Car sfx stop on death
         }
-
+        
         if (this.cursors.space.isDown && this.gameOver) {
-            this.bgCar.stop(carSFX);//This will keep the sfx from layering on reset.
             this.scene.restart();   
         }
 
