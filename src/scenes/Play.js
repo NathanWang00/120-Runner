@@ -14,10 +14,45 @@ class Play extends Phaser.Scene {
         this.load.image('window', './assets/windowOverlay.png');
         this.load.image('gameOver', './assets/gameOver.png');
         this.load.atlas('pTexture', './assets/pTexture.png', './assets/pTexture.json');
+        //sfx preload
+        this.load.audio('backgroundCar', ['assets/backgroundCar.wav']);
+        this.load.audio('slideSfx', ['assets/slide.wav']);
+        this.load.audio('jumpSfx', ['assets/jump.wav']);
+        this.load.audio('runningSfx', ['assets/running.wav']);
+        this.load.audio('hitSfx', ['assets/hit.wav']);
     }
 
     create() {
         this.gameOver = false;
+
+        //Game Audio
+        this.bgCar = this.sound.add('backgroundCar');
+        this.slideSfx = this.sound.add('slideSfx');
+        this.jumpSfx = this.sound.add('jumpSfx');
+        this.runningSfx = this.sound.add('runningSfx');
+        this.hitSfx = this.sound.add('hitSfx');
+        //Car Loop
+        var carSFX = {
+            mute: false,
+            volume: .45,
+            rate: 1,
+            detune: 0,
+            seek: 0,
+            loop: true,
+            delay: 0
+        }
+        this.bgCar.play(carSFX);//plays the audio
+        //Run loop
+        var runLoopSfx = {
+            mute: false,
+            volume: 1,
+            rate: 1,
+            detune: 0,
+            seek: 0,
+            loop: true,
+            delay: 0
+        }
+        this.runningSfx.play(runLoopSfx);//Plays running audio at start of scene
 
         // place street background
         this.clouds = this.add.tileSprite(0, 0, 2560, 720, 'clouds').setOrigin(0, 0);
@@ -229,6 +264,27 @@ class Play extends Phaser.Scene {
 
     update(time, delta) {
         if (!this.gameOver) {
+            //For background sfx reset.
+            var carSFX = {
+                mute: false,
+                volume: .45,
+                rate: 1,
+                detune: 0,
+                seek: 0,
+                loop: true,
+                delay: 0
+            }
+            var runLoopSfx = {
+                mute: false,
+                volume: 1,
+                rate: 1,
+                detune: 0,
+                seek: 0,
+                loop: true,
+                delay: 0
+            }
+
+
             //background
             this.road.tilePositionX += gameSpeed * 1.8 * delta / 60;
             this.bg.tilePositionX += gameSpeed * delta / 60;
@@ -253,8 +309,14 @@ class Play extends Phaser.Scene {
                 this.slideWait = false;
                 this.isSliding = false;
             }
+            //Keeps the running sfx going
+            if(!this.isRun){
+                this.runningSfx.play(runLoopSfx);
+            }
 
             if(this.cursors.up.isDown && this.player.body.touching.down) {
+                this.jumpSfx.play();
+
                 this.PlayerJump();
             }
 
@@ -268,10 +330,16 @@ class Play extends Phaser.Scene {
             }
 
             if(justDown && this.player.body.touching.down && !this.isSliding && this.cursors.up.isUp) {
+                //this.runningSfx.stop(runLoopSfx);
+                this.slideSfx.play();
+
                 this.PlayerSlide();
             }
 
             if(this.airSlide && this.player.body.touching.down && !this.isSliding && this.cursors.up.isUp) {
+                //this.runningSfx.stop(runLoopSfx);
+                this.slideSfx.play();
+
                 this.airSlide = false;
                 this.PlayerSlide();
             }
@@ -300,7 +368,13 @@ class Play extends Phaser.Scene {
             }
         }
 
+        //Stops the running sfx loop from playing in the game over screen
+        if (this.gameOver){
+            this.runningSfx.stop(runLoopSfx);//stops running loop on death}
+        }
+
         if (this.cursors.space.isDown && this.gameOver) {
+            this.bgCar.stop(carSFX);//This will keep the sfx from layering on reset.
             this.scene.restart();   
         }
 
@@ -406,6 +480,7 @@ class Play extends Phaser.Scene {
     }
 
     Die(player, obstacle){
+        this.hitSfx.play();//Death sound
         this.player.anims.play('deathAnim');
         this.player.body.enable = false;
         gameSpeed = 0;
