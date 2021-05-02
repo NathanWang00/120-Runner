@@ -52,7 +52,6 @@ class Menu extends Phaser.Scene {
         if (this.cursors.space.isDown) {
             this.carDoorSfx.play();
             this.scene.start("playScene");  
-  
         }
 
     }

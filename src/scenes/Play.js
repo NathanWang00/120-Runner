@@ -421,7 +421,7 @@ class Play extends Phaser.Scene {
             if (spawnDelay > lowestDelay) {
                 spawnDelay -= (1 - (startDelay - spawnDelay)/startDelay) * 15 * delta / 60;
             }
-            gameSpeed += (1 - (gameSpeed - startSpeed) / (maxSpeed - startSpeed)) * 0.3 * delta / 60;
+            gameSpeed += (1 - (gameSpeed - startSpeed) / (maxSpeed - startSpeed)) * 0.125 * delta / 60;
         }
     }
 
@@ -442,6 +442,8 @@ class Play extends Phaser.Scene {
         this.player.setScale(0.25, 0.25);
         this.isRun = false;
         this.isSliding = false;
+        console.log(gameSpeed);
+        console.log(spawnDelay);
     }
 
     PlayerSlide(){
