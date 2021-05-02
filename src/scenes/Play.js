@@ -239,6 +239,7 @@ class Play extends Phaser.Scene {
         this.physics.add.overlap(this.player, this.light2, this.Die, null, this);
         this.physics.add.overlap(this.player, this.trash2, this.Die, null, this);
         this.physics.add.overlap(this.player, this.piano2, this.Die, null, this);
+        this.physics.add.overlap(this.player, this.trash3, this.Die, null, this);
         this.physics.add.collider(this.player, this.road);
 
         // logic for spacing
@@ -255,6 +256,11 @@ class Play extends Phaser.Scene {
 
         // create window overlay
         this.window = this.add.sprite(1280 / 2, 720 / 2, 'window');
+
+        // score text
+        this.score = 100;
+        this.playConfig.color = '#FFFFFF';
+        this.scoreText = this.add.text(10, 10, this.score, this.playConfig).setOrigin(0, 0);
         
         // Nathan was dumb and didn't realize that global variables don't get reset
         gameSpeed = 12.5;
@@ -264,6 +270,10 @@ class Play extends Phaser.Scene {
 
     update(time, delta) {
         if (!this.gameOver) {
+            // increase score
+            this.score += gameSpeed/12.5 * delta / 60;
+            this.scoreText.text = Phaser.Math.CeilTo(this.score);
+
             //For background sfx reset.
             var carSFX = {
                 mute: false,
@@ -418,6 +428,7 @@ class Play extends Phaser.Scene {
         this.player.setOffset(205, 50);
         this.player.anims.play('runAnim');
         this.isRun = true;
+        this.slideSfx.stop();
     }
 
     PlayerJump(){
@@ -428,7 +439,6 @@ class Play extends Phaser.Scene {
         this.player.setScale(0.25, 0.25);
         this.isRun = false;
         this.isSliding = false;
-        console.log(gameSpeed);
     }
 
     PlayerSlide(){
