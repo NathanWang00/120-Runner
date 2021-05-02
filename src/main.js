@@ -33,12 +33,12 @@ let friction = 100;
 let airSpeed = 100;
 let startSpeed = 12.5;
 let gameSpeed = 12.5;
-let maxSpeed = 45;
+let maxSpeed = 55;
 let randomCount = 3;
 let randomTrack = 3;
 let startDelay = 4500;
 let spawnDelay = 4500;
-let lowestDelay = 1000;
+let lowestDelay = 750;
 
 
 /* 

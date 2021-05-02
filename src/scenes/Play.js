@@ -263,9 +263,9 @@ class Play extends Phaser.Scene {
         this.scoreText = this.add.text(10, 10, this.score, this.playConfig).setOrigin(0, 0);
         
         // Nathan was dumb and didn't realize that global variables don't get reset
-        gameSpeed = 12.5;
+        gameSpeed = startSpeed;
         randomCount = 3;
-        spawnDelay = 4500;
+        spawnDelay = startDelay;
     }
 
     update(time, delta) {
@@ -416,9 +416,9 @@ class Play extends Phaser.Scene {
         // game difficult up
         if(!this.gameOver){
             if (spawnDelay > lowestDelay) {
-                spawnDelay -= (1 - (startDelay - spawnDelay)/startDelay) * 12 * delta / 60;
+                spawnDelay -= (1 - (startDelay - spawnDelay)/startDelay) * 15 * delta / 60;
             }
-            gameSpeed += (1 - (gameSpeed - startSpeed) / (maxSpeed - startSpeed)) * 0.1 * delta / 60;
+            gameSpeed += (1 - (gameSpeed - startSpeed) / (maxSpeed - startSpeed)) * 0.3 * delta / 60;
         }
     }
 
@@ -462,7 +462,7 @@ class Play extends Phaser.Scene {
             } else {
                 this.lastObjWidth = 0;
             }
-            this.activeObject.x += Phaser.Math.Between(0, 50);
+            this.activeObject.x += Phaser.Math.Between(-100, 50);
             
             this.obstacles.kill(this.activeObject);
             this.obstacles.remove(this.activeObject);
