@@ -67,7 +67,7 @@ class Play extends Phaser.Scene {
             fontFamily: 'crayonhand',
             fontSize: '42px',
             color: '#FFFFFF',
-            stroke: '#000000',
+            stroke: '#282828',
             strokeThickness: 3,
             align: 'left'
 
@@ -259,8 +259,11 @@ class Play extends Phaser.Scene {
 
         // score text
         this.score = 100;
-        this.playConfig.color = '#FFFFFF';
-        this.scoreText = this.add.text(10, 10, this.score, this.playConfig).setOrigin(0, 0);
+        this.playConfig.fontSize = '60px';
+        this.playConfig.color = '#282828';
+        this.scoreTextShadow = this.add.text(20 + 2, 20 + 2, this.score, this.playConfig).setOrigin(0, 0);
+        this.playConfig.color = '#9FE08D';
+        this.scoreText = this.add.text(20, 20, this.score, this.playConfig).setOrigin(0, 0);
         
         // Nathan was dumb and didn't realize that global variables don't get reset
         gameSpeed = startSpeed;
@@ -273,6 +276,7 @@ class Play extends Phaser.Scene {
             // increase score
             this.score += gameSpeed/12.5 * delta / 60;
             this.scoreText.text = Phaser.Math.CeilTo(this.score);
+            this.scoreTextShadow.text = Phaser.Math.CeilTo(this.score);
 
             //For background sfx reset.
             var carSFX = {
@@ -497,14 +501,23 @@ class Play extends Phaser.Scene {
                     
         // UI elements
         this.gameOver = this.add.sprite(1280 / 2, 720 / 2 - 75, 'gameOver');
-            
-        this.playConfig.color = '#000000';
-        this.add.text(1280 / 2 + 1, 720 / 2 + 2 + 25, 'Press           to restart!', this.playConfig).setOrigin(0.5);
+
+        this.playConfig.fontSize = '72px';
+        this.playConfig.strokeThickness = 5;
+        this.playConfig.color = '#282828';
+        this.add.text(1280 / 2 + 3, 720 / 2 + 45 + 3, 'FINAL SCORE: ' + Phaser.Math.CeilTo(this.score), this.playConfig).setOrigin(0.5);
+        this.playConfig.color = '#9FE08D';
+        this.add.text(1280 / 2, 720 / 2 + 45, 'FINAL SCORE: ' + Phaser.Math.CeilTo(this.score), this.playConfig).setOrigin(0.5);
+
+        this.playConfig.fontSize = '40px';
+        this.playConfig.strokeThickness = 3;
+        this.playConfig.color = '#282828';
+        this.add.text(1280 / 2 + 2, 720 / 2 + 3 + 125, 'Press           to restart!', this.playConfig).setOrigin(0.5);
         this.playConfig.color = '#FFFFFF';
-        this.add.text(1280 / 2, 720 / 2 + 25, 'Press           to restart!', this.playConfig).setOrigin(0.5);
-        this.playConfig.color = '#000000';
-        this.add.text(1280 / 2 - 55 + 1, 720 / 2 + 2 + 25, 'space', this.playConfig).setOrigin(0.5);
+        this.add.text(1280 / 2, 720 / 2 + 125, 'Press           to restart!', this.playConfig).setOrigin(0.5);
+        this.playConfig.color = '#282828';
+        this.add.text(1280 / 2 - 55 + 2, 720 / 2 + 3 + 125, 'space', this.playConfig).setOrigin(0.5);
         this.playConfig.color = '#FFE272';
-        this.add.text(1280 / 2 - 55, 720 / 2 + 25, 'space', this.playConfig).setOrigin(0.5);
+        this.add.text(1280 / 2 - 55, 720 / 2 + 125, 'space', this.playConfig).setOrigin(0.5);
     }
 }
