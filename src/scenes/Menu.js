@@ -8,12 +8,12 @@ class Menu extends Phaser.Scene {
         this.load.image('menuBG', './assets/menuBG.png');
         this.load.image('logo', './assets/logo.png');
         this.load.image('instructions', './assets/instructions.png');   
-
+        this.load.audio('carDoorSfx', ['assets/doorClose.wav']);
     }
 
     
     create() {
-        
+        this.carDoorSfx = this.sound.add('carDoorSfx');
         this.cursors = this.input.keyboard.createCursorKeys();
 
         // create graphics
@@ -50,7 +50,7 @@ class Menu extends Phaser.Scene {
     update() {
 
         if (this.cursors.space.isDown) {
-
+            this.carDoorSfx.play();
             this.scene.start("playScene");  
   
         }
