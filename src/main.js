@@ -1,7 +1,14 @@
 // Sidewalk Sprint by Team Radicool Dragonfire Ninjas
 // Made for the AGPM and CMPM 120-1 classes, section E
 // By Liam Booher, Ashley Chapp, Ethan Tung, and Nathan Wang
-// 30 April 2021
+// Completed May 2nd 2021
+
+// Creative tilt:
+// Programming wise, I'm not sure what you expect. I never used Phaser so everything that wasn't a part of Rocket Patrol was learned for this project.
+// I'd say I'm the most proud of the collisions and different player states (running, sliding, jumping) even if it wasn't done that well.
+// Also the obstacle randomization and game speed increasing was something that was difficult but turned out decent.
+// Art wise, I think the game has a very nice and unique visual style. In particular, the UI and main menu look great and the colors on the obstalces vs
+// the backgrounds accentuates the gameplay. The sound effects are also nice, especially for being produced all by ourselves.
 
 let config = {
     type: Phaser.CANVAS,
