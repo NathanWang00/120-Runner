@@ -258,7 +258,7 @@ class Play extends Phaser.Scene {
         this.window = this.add.sprite(1280 / 2, 720 / 2, 'window');
 
         // score text
-        this.score = 100;
+        this.score = 0;
         this.playConfig.fontSize = '60px';
         this.playConfig.color = '#282828';
         this.scoreTextShadow = this.add.text(20 + 2, 20 + 2, this.score, this.playConfig).setOrigin(0, 0);
